@@ -8,6 +8,14 @@ Updated to Iteration_1:
 - outputs dots correctly on Processing 4.3.4
 - Some basic annimation
 
+Updated to Iteration_2:
+- Added midiBus library
+- Added midi output
+- fix for null pointer error
+- outputing midi based on energy
+
+
 TODO:
-- Create new version implementing midi
-- Route midi for use with garage band
+- Work with Terrance to test
+- Make sure passing through to garage band
+- Select notes that we want used
