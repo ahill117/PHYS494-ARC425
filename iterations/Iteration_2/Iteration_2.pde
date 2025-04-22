@@ -9,15 +9,16 @@ float maxEnergy = pow(10, 9);
 int dot_num = 0;
 float rand_x = 0;
 float rand_y = 0;
-float screen_width = 600;
-float screen_height=400;
+float screen_width = 1920;
+float screen_height=1080;
 
 void setup() {
-  size(600, 400);
+  size(1920, 1080);
   MidiBus.list();
-  
+  fullScreen();
+  noCursor();
   // Select correct Bus with Terrance
-  myBus = new MidiBus(new java.lang.Object(), -1, 1);  //java.lang.Object fixed null pointer error on windows
+  myBus = new MidiBus(new java.lang.Object(), -1, 3);  //java.lang.Object fixed null pointer error on windows
   
   //fullScreen();
   background(0);
@@ -45,13 +46,15 @@ void draw() {
     h.assignColorByEnergy();
     h.display();
     h.fade();
-    h.sendMidiNote();
+    //h.sendMidiNote();
   }
   while (hits.size() < dot_num) {
-    hits.add(new Hit());
+    Hit hit = new Hit();
+    hit.sendMidiNote();
+    hits.add(hit);
   }
   //noLoop();
-  println("Hits: " + hits.size());
+  //println("Hits: " + hits.size());
 }
 
 
@@ -72,7 +75,7 @@ class Hit {
   float dotSize;   //dot size
   float alpha;          // Alpha value for fading effect
   
-  float gravity = 0.0005;  // Gravity effect (can adjust)
+  float gravity = 0.002;//0015;  // Gravity effect (can adjust)
   float ySpeed = 0;     // Speed of the fall (velocity)
   float fallAccel = 0.01;  // Falling acceleration
   
@@ -132,6 +135,7 @@ class Hit {
      ySpeed += gravity;
     rand_y += ySpeed; // Update the y position with the current falling speed
     // Prevent the dot from going off the bottom of the screen
+    dotSize = dotSize*.995;
   }
   
   // note
@@ -149,12 +153,12 @@ class Hit {
   boolean isAlive() {
     return (millis() - birthMillis) < (lifetime * 1000); // Check if the lifetime has passed
   }
+  
 
   // Display the hit as a circle on the screen
   void display() {
     noStroke();
     fill(hitColor, alpha);  // Set color based on energy level
-    
     ellipse(rand_x, rand_y, dotSize, dotSize);  // Draw hit as a circle at the position
   }
 }
